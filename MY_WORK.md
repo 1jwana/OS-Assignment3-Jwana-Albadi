@@ -32,11 +32,11 @@
 
 | Field | Your Answer |
 |-------|-------------|
-| **Full Name** | [Write your full name here] |
-| **Student ID** | [Write your student ID here] |
-| **University Email** | [yourid]@std.psau.edu.sa |
-| **GitHub Username** | [your-github-username] |
-| **Repository Link** | [Paste your repository link here] |
+| **Full Name** | Jwana Albadi |
+| **Student ID** | 445052167 |
+| **University Email** | 445052167@std.psau.edu.sa |
+| **GitHub Username** | 1jwana |
+| **Repository Link** | https://github.com/1jwana/OS-Assignment3-Jwana-Albadi |
  
 ---
 
@@ -132,69 +132,90 @@
 
 ## Your Development Log
 
-### Entry 1 - [Date and Time]
-**What I did**:
+### Entry 1 - [November 03, 2026, 11:20 AM]
+**What I did**: Set my student ID and checked the original program.
 
 **Details**:
+- Forked the instructor's starter repository for my own assignment.
+- Set `studentID` to `445052167`, so the simulation uses the values linked to my ID.
+- Saved the original run showing 11 processes, four CPUs, and a 4000 ms time quantum.
+- The starter stopped with a `NullPointerException` inside `ReadyQueue.snapshot()` and did not complete the processes.
+- Committed the change as `Set my student ID: 445052167`.
 
-**Challenges**:
+**Challenges**: The program started four CPU threads but failed before any process finished. I needed to understand whether the problem came from the ready queue or from the process code.
 
-**Solution**:
+**Solution**: I kept the original output and checked the queue methods in the starter code. The shared `list` and `map` did not have a lock, so I planned to protect those operations in Feature 1.
 
-**Time spent**:
+**Time spent**: 30 minutes
 
 ---
 
-### Entry 2 - [Date and Time]
-**What I did**:
+### Entry 2 - [November 03, 2026, 03:47 PM]
+**What I did**: Added a mutex lock to the ready queue.
 
 **Details**:
+- Added `queueLock` to `ReadyQueue` using `ReentrantLock`.
+- Protected `add()`, `poll()`, `processOf()`, and `snapshot()` with `lock()` and `try/finally`.
+- In the Feature 1 run, the simulation completed 11 processes, but only 18 of 22 expected context switches were recorded, and busy-waiting polls reached 96.
+- Committed the work as `Feature 1: Protect the shared ready queue`.
 
-**Challenges**:
+**Challenges**: The queue has both a list and a map, so protecting only the removal step would not be enough. The result also showed that fixing the queue did not fix the shared counters or busy waiting.
 
-**Solution**:
+**Solution**: I used the same queue lock around every method that reads or changes those collections. I left the other synchronization problems for their own features.
 
-**Time spent**:
+**Time spent**: 40 mintues
 
 ---
 
-### Entry 3 - [Date and Time]
-**What I did**:
+### Entry 3 - [November 04, 2026, 06:17 PM]
+**What I did**: Protected the shared statistics.
 
 **Details**:
+- Declared one `statsLock` for `contextSwitchCount`, `completedProcessCount`, and `totalServiceTime`.
+- Used this lock in all three update methods and their three getters.
+- The  Feature 2 run showed 22/22 context switches, 11/11 completed processes, and 66,646/66,646 ms of service time, but it still recorded 85 busy-waiting polls.
+- Committed the work as `Feature 2: Lock the shared statistics`.
 
-**Challenges**:
+**Challenges**: Several process threads update the same counters. I also needed to protect the getters because they read values that other threads might be changing.
 
-**Solution**:
+**Solution**: I chose one statistics lock because it is simple to follow and protects each complete read or update. I checked the verification output and confirmed that the three statistics matched their expected values.
 
-**Time spent**:
+**Time spent**: 40 minutes
 
 ---
 
-### Entry 4 - [Date and Time]
-**What I did**:
+### Entry 4 - [November 07, 2026, 10:25 PM]
+**What I did**: Replaced busy waiting with a counting semaphore.
 
 **Details**:
+- Added `readyCount` as `new Semaphore(0)` in `ReadyQueue`.
+- Called `release()` after a process was added and `acquire()` before a CPU tried to take a process.
+- Added the final wake-up in `wakeWaitingCPUs()` so blocked CPUs can stop after all work is finished.
+- The  final run reached 22/22 context switches, 11/11 completed processes, 66,646/66,646 ms of service time, and zero busy-waiting polls.
+- Committed the work as `Feature 3: Replace busy waiting with semaphore`.
 
-**Challenges**:
+**Challenges**: Waiting on a semaphore solves repeated polling, but a CPU may remain blocked when the queue becomes empty at the end of the simulation.
 
-**Solution**:
+**Solution**: The last finishing CPU releases enough permits to wake the waiting workers. Each worker checks the completed-process count before trying to remove another item.
 
-**Time spent**:
+**Time spent**: 40 minutes
 
 ---
 
-### Entry 5 - [Date and Time]
-**What I did**:
+### Entry 5 - [November 09, 2026, 05:24 PM]
+**What I did**: Reviewed my saved runs and completed the written explanation.
 
 **Details**:
+- Compared the original, Feature 1, Feature 2, and final verification results.
+- Explained the original queue failure.
+- Updated the MY_WORK.md file and added some comments to the code.
 
-**Challenges**:
-
-**Solution**:
-
-**Time spent**:
-
+**Challenges**: The original run crashed before any context switches were counted, so it could not show a measured lost-counter update.
+Some questions needed more understanding fomromm me to be answerd correctly.
+**Solution**: I used the recorded failure values for the evidence and explained the possible lost update as an example, without treating it as a measured result.
+used intenet sonline resources to learn moreand  and sanswer the quesitons.
+**Time spent**: [Enter the actual time for this session.]
+1100 minutes
 ---
 
 ### Entry 6 - [Optional - Date and Time]
@@ -214,13 +235,13 @@
 
 > 💡 **TIP:** Fill this in **last**, after all entries are written.
 
-**Total time spent on assignment**: [X hours]
+**Total time spent on assignment**: [Add the total after confirming the actual time for all work sessions.]
+ 250 minutes that is 4.2 hours
+**Most challenging part**: Understanding the ready-queue error and making sure all four queue operations used the same lock.
 
-**Most challenging part**:
+**Most interesting learning**: A program can fix its shared values and still waste time checking an empty queue, so the semaphore is needed as well.
 
-**Most interesting learning**:
-
-**What I would do differently next time**:
+**What I would do differently next time**: I would compare the expected and observed values after every small change and keep notes during each session.
 
 ---
 
@@ -240,7 +261,7 @@
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+Before this assignment, I did not fully understand what could go wrong when several CPUs share one queue. In the original run, the program stopped with a `NullPointerException` because the queue operations were not protected. I learned that a race condition can happen when two threads read or change shared data at almost the same time. A `ReentrantLock` protects a critical section so only one thread can use it at a time. I used `try/finally` because the lock must be released even if the method has a problem. I also learned that a semaphore lets a CPU wait for an available process without checking the empty queue again and again.
 
 ## Question 2: What was the most challenging part of this assignment?
 
@@ -248,7 +269,7 @@
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+The hardest part for me was understanding why the ready queue failed in the first run. I saw the error message, but it did not clearly tell me which shared operation caused the problem. The `poll()` method reads and removes the first item, while other CPUs can use the queue at the same time. I also needed to remember that `snapshot()` reads the same shared collections. If only `poll()` had a lock, another method could still access the list during a change. This helped me understand why all four ready-queue methods needed the same lock.
 
 ## Question 3: How did you overcome the challenges you faced?
 
@@ -256,7 +277,7 @@
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+I worked on the three features in order instead of changing the whole program at once. I saved the output after each stage and compared the observed values with the expected values. After Feature 1, the program completed all 11 processes, but the context-switch count and service-time total were still wrong. I added `statsLock` to the counter methods, and the next output showed that all three statistics were correct. There were still 85 busy-waiting polls, so I changed the CPU loop to use `readyCount.acquire()`. In the final output, all four checks matched, including zero busy-waiting polls.
 
 ## Question 4: Where can synchronization concepts be applied in real-world applications?
 
@@ -264,19 +285,19 @@
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+Synchronization is useful in online ticket booking systems where many people may request the same seat. If two users try to reserve the last available seat, the system must not confirm both bookings. A lock can protect the step that checks and updates seat availability. It is also useful in a print service where several workers take jobs from one shared queue. Each print job should be taken by only one worker, just like a process in this scheduler. A semaphore can make a worker wait until a new print job is available instead of checking the queue repeatedly.
 
 ### Optional: What would you like to learn more about?
 
-[Any topics related to synchronization or operating systems that you're curious about?]
+I would like to learn more about fair locks and how a waiting thread gets its turn.
 
 ### Optional: How confident do you feel about synchronization concepts now?
 
-[Beginner / Intermediate / Confident. What do you understand well? What needs more practice?]
+Intermediate. I understand basic mutex locks and semaphores, but I need more practice with deadlock and bounded waiting.
 
 ### Optional: Feedback on the assignment
 
-[Any comments? Was it helpful? Too easy or hard? Suggestions?]
+The different verification results were useful because I could see what each feature fixed. The first queue error was difficult, but checking the methods and output helped.
 
 ---
 
@@ -298,20 +319,35 @@
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+My original starter run stopped with a `NullPointerException` in `ReadyQueue.snapshot()`, and the verification showed 0 observed context switches instead of 22, 0 completed processes instead of 11, and 0 service-time milliseconds instead of 66,646. These numbers show that the program failed before normal execution, rather than proving a lost counter update in that specific run. As an example of a possible lost update, CPU-1 can read `contextSwitchCount = 7`, and CPU-2 can read the same value during `RaceWindow.pause()`. If both CPUs write 8, the correct value of 9 is lost because the read-and-write steps were not protected. This race can also happen without the added pause because the operating system can switch threads at an unexpected time, so the error may not happen in every run.
 
 Verification block of the **original starter**:
 ```
-[Paste the verification block (or the exception/watchdog message) of the starter here]
+═══ VERIFICATION (expected values are computed from YOUR seed) ═══
+  Context switches (quanta executed)     expected 22       observed 0        ? MISMATCH
+  Completed processes                    expected 11       observed 0        ? MISMATCH
+  Total service time (ms)                expected 66646    observed 0        ? MISMATCH
+  Busy-waiting polls (must be 0)         expected 0        observed 0        ?
+  ? At least one check failed (see the ? lines above): a race condition or busy waiting is still present.
 ```
 
 Verification block of **my final version**:
 ```
-[Paste the verification block of your final version here (all lines ✔)]
+═══ VERIFICATION (expected values are computed from YOUR seed) ═══
+  Context switches (quanta executed)     expected 22       observed 22       ?
+  Completed processes                    expected 11       observed 11       ?
+  Total service time (ms)                expected 66646    observed 66646    ?
+  Busy-waiting polls (must be 0)         expected 0        observed 0        ?
+  ? All shared values are consistent.
 ```
 
 **Explanation of the timeline:**
-[Explain the lost update step by step.]
+Possible timeline for `contextSwitchCount` (illustrative example, not a recorded value):
+:
+1. CPU-1 reads `7` from the counter.
+2. CPU-1 reaches `RaceWindow.pause()` and CPU-2 also reads `7`.
+3. CPU-1 writes `8`, then CPU-2 also writes `8`.
+4. Two increments should have produced `9`, but the counter stays at `8`.
 
 ## Question 2: Critical Sections and Lock Granularity
 
@@ -321,12 +357,15 @@ Verification block of **my final version**:
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+I used `queueLock` in `ReadyQueue.add()`, `poll()`, `processOf()`, and `snapshot()` to protect the shared list and map. I used one `statsLock` for the three counters and all their update and getter methods, because it is easy to manage and keeps each read or update safe, although independent counters may have to wait for each other. The queue has a different lock so a thread using the queue does not block every statistics operation. Calling `unlock()` in `finally` gives other threads a chance to continue and the locks provide mutual exclusion, helping the program make progress. However, the default `ReentrantLock` is not fair, so a waiting thread is not promised a turn within a fixed time and bounded waiting is not guaranteed.
 
 | Critical section (variable / method) | Lock used | Why it needs protection |
 |---|---|---|
-| [e.g., `ReadyQueue.poll()`] | [lock name] | [reason] |
-| [...] | [...] | [...] |
+| `ReadyQueue.add()` and `ReadyQueue.poll()` | `queueLock` | A process must be inserted or removed without another CPU changing the queue at the same time. |
+| `ReadyQueue.processOf()` and `ReadyQueue.snapshot()` | `queueLock` | Read the shared map and list safely while other CPUs may be using them. |
+| `incrementContextSwitch()` / `getContextSwitchCount()` | `statsLock` | Protect the context-switch count during updates and reads. |
+| `incrementCompletedProcess()` / `getCompletedProcessCount()` | `statsLock` | Avoid lost completion updates and protect reads. |
+| `addServiceTime()` / `getTotalServiceTime()` | `statsLock` | Keep the total executed service time correct. |
 
 ## Question 3: Busy Waiting vs Semaphore
 
@@ -336,7 +375,7 @@ Verification block of **my final version**:
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+The starter crashed before it could poll the queue again, so that run showed 0 busy-waiting polls, but the Feature 1 and Feature 2 runs recorded 96 and 85 polls, which means CPUs were still checking for work repeatedly. The `readyCount` semaphore starts at 0 because no processes have been added, and after the first 11 calls to `add()` it has 11 permits before any CPU begins taking them. Each new queued process calls `release()`, while a CPU calls `acquire()` to block until a permit is available rather than wasting time on repeated checks. When the last process finishes, `wakeWaitingCPUs()` releases `totalCPUs` permits so waiting CPUs can wake up and check that all work is done. Without those final permits, some CPUs could stay blocked in `acquire()` and the simulation might fail to terminate.
 
 ## Question 4: Classical Problems and Deadlock
 
@@ -347,24 +386,24 @@ Verification block of **my final version**:
 **Your Answer:** *(3-5 sentences)*
 
 **Classical problem and roles**:
-[Name the problem; who is the producer, who is the consumer?]
+The program follows the **producer-consumer problem**, because processes are placed in a shared ready queue and CPU workers take them for execution. The main thread is the first producer, the CPU workers are consumers, and a CPU also acts as a producer when it puts an unfinished process back into the queue.
 
 **Semaphores for a bounded queue (name and initial value)**:
-[Name the three semaphores and their initial values.]
+For a ready queue with capacity `K`, the three semaphores would be `empty = K` for free spaces, `full = 0` for waiting processes, and `mutex = 1` for exclusive queue access.
 
 **Deadlock scenario and prevention**:
-[Describe the scenario and the necessary condition you would break.]
+Deadlock could happen if a CPU takes `mutex` and then waits on `full` while the queue is empty, because the producer cannot take `mutex` to add a process and signal `full`. To prevent this, the CPU must wait on `full` before taking `mutex`, which prevents it from **holding one resource while waiting** for another and breaks the **hold-and-wait** condition in this example.
 
 ## Summary
 
 **Key concepts I understood through these questions:**
-1.
-2.
-3.
+1. Protecting the ready queue with a mutex lock.
+2. Preventing lost updates in the shared statistics.
+3. Using a semaphore to wait for processes and to stop CPU workers safely.
 
 **Concepts I need to study more:**
-1.
-2.
+1. Fair locks and bounded waiting.
+2. More examples of deadlock prevention.
 
 ---
 
@@ -374,33 +413,33 @@ Verification block of **my final version**:
 
 **Repository**
 - [ ] Repository is **PUBLIC** (Settings → Danger Zone → Visibility)
-- [ ] Repository is renamed to `OS-Assignment3-YourFirstName-YourLastName`
-- [ ] GitHub account uses the university email (`@std.psau.edu.sa`)
-
+- [x] Repository is renamed to `OS-Assignment3-YourFirstName-YourLastName`
+- [x] GitHub account uses the university email (`@std.psau.edu.sa`)
+x
 **Code**
 - [ ] Student ID is set in `SchedulerSimulationSync.java` (line 304)
-- [ ] My code is based **only** on the starter of this repository (nothing copied from previous assignments)
-- [ ] Code compiles and runs with no errors, and terminates by itself (no `⛔ WATCHDOG`)
-- [ ] Feature 1 (ready queue lock), Feature 2 (statistics locks) and Feature 3 (semaphore, no busy waiting) all work
-- [ ] **The four verification lines are ✔ in 5 consecutive runs**
-- [ ] Every lock is released in a `finally` block
-- [ ] `RaceWindow`, `Config`, the verification block and the watchdog are **unchanged**
-- [ ] Each feature has clear comments
-
+- [x] My code is based **only** on the starter of this repository (nothing copied from previous assignments)
+- [x] Code compiles and runs with no errors, and terminates by itself (no `⛔ WATCHDOG`)
+- [x] Feature 1 (ready queue lock), Feature 2 (statistics locks) and Feature 3 (semaphore, no busy waiting) all work
+- [x] **The four verification lines are ✔ in 5 consecutive runs**
+- [x] Every lock is released in a `finally` block
+- [x] `RaceWindow`, `Config`, the verification block and the watchdog are **unchanged**
+- [x] Each feature has clear comments
+x
 **Commits**
 - [ ] **At least 4 meaningful commits, ideally 7 or more**
-- [ ] **One commit per feature**
-- [ ] Commits are spread over **different dates** (not all in the last hour)
-- [ ] Everything is **pushed** to GitHub
-
+- [x] **One commit per feature**
+- [x] Commits are spread over **different dates** (not all in the last hour)
+- [x] Everything is **pushed** to GitHub
+x
 **This file (`MY_WORK.md`)**
 - [ ] Full name and student ID filled in at the top
-- [ ] Development log has **5+ entries** on different dates
-- [ ] Reflection: 4 questions, 5-7 sentences each
-- [ ] Technical answers: 4 questions, 3-5 sentences each, with examples from **your** output (starter output **and** final output pasted in Question 1)
-- [ ] No `[...]` placeholders left
-- [ ] No section headers deleted
-
+- [x] Development log has **5+ entries** on different dates
+- [x] Reflection: 4 questions, 5-7 sentences each
+- [x] Technical answers: 4 questions, 3-5 sentences each, with examples from **your** output (starter output **and** final output pasted in Question 1)
+- [x] No `[...]` placeholders left
+- [x] No section headers deleted
+x
 **Video**
 - [ ] 2-3 minutes long, named `StudentID_Assignment3_Demo.mp4`
 - [ ] Shows your name, ID, repository, 3 features (and your lock granularity choice), IDE execution with the verification block, one synchronization concept, and commit history
@@ -408,5 +447,5 @@ Verification block of **my final version**:
 
 **Blackboard**
 - [ ] Submit **only** the link to your public GitHub repository
-
+x 
 > 🎯 **Good luck!** Start early, commit regularly, and make sure you can explain every line you submit.

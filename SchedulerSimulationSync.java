@@ -68,8 +68,7 @@ class SharedStats {
     // waiting). Must be 0 after Feature 3.
     static final java.util.concurrent.atomic.AtomicInteger busyWaitPolls = new java.util.concurrent.atomic.AtomicInteger(
             0);
-
-    // One lock protects all shared statistics and their getters.
+    // I Choosed Option A One lock used to protects all three shared values
     private static final ReentrantLock statsLock = new ReentrantLock();
     // Think about it: ONE lock for the three variables, or ONE lock PER variable?
     // (you must justify it in MY_WORK.md)
@@ -145,7 +144,7 @@ class ReadyQueue {
     private final LinkedList<Thread> list = new LinkedList<>(); // FIFO queue of threads
     private final Map<Thread, Process> map = new HashMap<>(); // thread -> process (same idea as Assignment 1)
 
-    // One lock protects both collections in the ready queue.
+    // One lock will be used to protects`list` and `map`
     private final ReentrantLock queueLock = new ReentrantLock();
 
     // Each permit represents a process waiting in the queue.
