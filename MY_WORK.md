@@ -214,8 +214,8 @@
 Some questions needed more understanding fomromm me to be answerd correctly.
 **Solution**: I used the recorded failure values for the evidence and explained the possible lost update as an example, without treating it as a measured result.
 used intenet sonline resources to learn moreand  and sanswer the quesitons.
-**Time spent**: [Enter the actual time for this session.]
-1100 minutes
+
+**Time spent**: 110 minutes
 ---
 
 ### Entry 6 - [Optional - Date and Time]
@@ -236,7 +236,7 @@ used intenet sonline resources to learn moreand  and sanswer the quesitons.
 > 💡 **TIP:** Fill this in **last**, after all entries are written.
 
 **Total time spent on assignment**: [Add the total after confirming the actual time for all work sessions.]
- 250 minutes that is 4.2 hours
+ 250 minutes that is 4.3 hours
 **Most challenging part**: Understanding the ready-queue error and making sure all four queue operations used the same lock.
 
 **Most interesting learning**: A program can fix its shared values and still waste time checking an empty queue, so the semaphore is needed as well.
