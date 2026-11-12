@@ -412,12 +412,12 @@ Deadlock could happen if a CPU takes `mutex` and then waits on `full` while the 
 > ⚠️ **WARNING:** Go through every line. Blackboard does not accept submissions after the deadline, which is **November 14, 2026**.
 
 **Repository**
-- [ ] Repository is **PUBLIC** (Settings → Danger Zone → Visibility)
+- [x] Repository is **PUBLIC** (Settings → Danger Zone → Visibility)
 - [x] Repository is renamed to `OS-Assignment3-YourFirstName-YourLastName`
 - [x] GitHub account uses the university email (`@std.psau.edu.sa`)
 x
 **Code**
-- [ ] Student ID is set in `SchedulerSimulationSync.java` (line 304)
+- [x] Student ID is set in `SchedulerSimulationSync.java` (line 304)
 - [x] My code is based **only** on the starter of this repository (nothing copied from previous assignments)
 - [x] Code compiles and runs with no errors, and terminates by itself (no `⛔ WATCHDOG`)
 - [x] Feature 1 (ready queue lock), Feature 2 (statistics locks) and Feature 3 (semaphore, no busy waiting) all work
@@ -427,13 +427,13 @@ x
 - [x] Each feature has clear comments
 x
 **Commits**
-- [ ] **At least 4 meaningful commits, ideally 7 or more**
+- [x] **At least 4 meaningful commits, ideally 7 or more**
 - [x] **One commit per feature**
 - [x] Commits are spread over **different dates** (not all in the last hour)
 - [x] Everything is **pushed** to GitHub
 x
 **This file (`MY_WORK.md`)**
-- [ ] Full name and student ID filled in at the top
+- [x] Full name and student ID filled in at the top
 - [x] Development log has **5+ entries** on different dates
 - [x] Reflection: 4 questions, 5-7 sentences each
 - [x] Technical answers: 4 questions, 3-5 sentences each, with examples from **your** output (starter output **and** final output pasted in Question 1)
@@ -442,10 +442,10 @@ x
 x
 **Video**
 - [ ] 2-3 minutes long, named `StudentID_Assignment3_Demo.mp4`
-- [ ] Shows your name, ID, repository, 3 features (and your lock granularity choice), IDE execution with the verification block, one synchronization concept, and commit history
+- [x] Shows your name, ID, repository, 3 features (and your lock granularity choice), IDE execution with the verification block, one synchronization concept, and commit history
 - [ ] Link is **public** (tested in an incognito window) and pasted in the **Video Link** section above
 
 **Blackboard**
-- [ ] Submit **only** the link to your public GitHub repository
+- [x] Submit **only** the link to your public GitHub repository
 x 
 > 🎯 **Good luck!** Start early, commit regularly, and make sure you can explain every line you submit.
